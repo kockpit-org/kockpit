@@ -141,7 +141,7 @@ resource "aws_security_group_rule" "lb_http_from_cloudfront" {
   to_port           = 80
   protocol          = "tcp"
   prefix_list_ids   = [data.aws_ec2_managed_prefix_list.cloudfront.id]
-  security_group_id = var.lb_security_group_id
+  security_group_id = coalesce(var.cloudfront_security_group_id, var.lb_security_group_id)
   description       = "Allow CloudFront to reach ALB on port 80"
 }
 

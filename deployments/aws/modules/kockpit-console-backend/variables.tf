@@ -47,6 +47,17 @@ variable "lb_security_group_id" {
   type        = string
 }
 
+variable "cloudfront_security_group_id" {
+  description = <<-EOT
+    Security group (attached to the load balancer) that receives the CloudFront
+    origin-facing ingress rule on port 80. The managed prefix list counts as 55
+    rules against the 60-rules-per-group quota, so a dedicated group is
+    recommended. Defaults to lb_security_group_id when null.
+  EOT
+  type        = string
+  default     = null
+}
+
 # Container Configuration
 variable "image_tag" {
   description = "Docker image tag for the kockpit backend application"

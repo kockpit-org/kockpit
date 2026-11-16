@@ -85,6 +85,7 @@ module "kockpit_backend" {
 | ecs_cluster_name | Name of the existing ECS cluster | `string` | n/a | yes |
 | load_balancer_arn | ARN of the load balancer this module creates its HTTP listener on | `string` | n/a | yes |
 | lb_security_group_id | Security group ID of the load balancer | `string` | n/a | yes |
+| cloudfront_security_group_id | Load balancer security group that receives the CloudFront port 80 rule (defaults to `lb_security_group_id`) | `string` | `null` | no |
 | opensearch_endpoints | OpenSearch cluster endpoints | `string` | n/a | yes |
 | kockpit_data_s3_bucket | S3 bucket for Kockpit data storage | `string` | n/a | yes |
 | kockpit_manifests_s3_bucket | S3 bucket for Kockpit manifests storage | `string` | n/a | yes |
@@ -133,8 +134,11 @@ The module uses a fixed container image: `ghcr.io/mahieddine-ichir/kockpit/kockp
 
 The ECS task's security group (created by `ecs-app-module`) allows inbound traffic from
 `lb_security_group_id` on `container_port`, plus `health_check_port` when it differs from
-`container_port`. This module additionally opens `lb_security_group_id` to CloudFront's managed
-prefix list on port 80, so the ALB can be reached from the CloudFront distribution in front of it.
+`container_port`. This module additionally opens CloudFront's managed prefix list on port 80, so
+the ALB can be reached from the CloudFront distribution in front of it. The rule goes on
+`cloudfront_security_group_id` when set, otherwise on `lb_security_group_id`. Prefer a dedicated
+group attached to the ALB: the CloudFront prefix list counts as 55 rules against the
+60-rules-per-security-group quota, which leaves almost no room for other rules in the same group.
 
 Note: unlike the bidirectional rules this module used to create directly, `ecs-app-module` does not
 add egress rules onto the load balancer's own security group — it relies on that security group
