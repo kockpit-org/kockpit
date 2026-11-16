@@ -22,7 +22,7 @@ output "ecs_security_group" {
 }
 
 output "ecs_kms_key_id" {
-  value = aws_kms_key.app_kms_key.id
+  value = try(aws_kms_key.app_kms_key[0].id, null)
 }
 
 output "ecs_service_name" {

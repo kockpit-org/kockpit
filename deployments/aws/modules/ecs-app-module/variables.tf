@@ -310,3 +310,9 @@ variable "periodic_downscale_max_capacity" {
   default = 1
 }
 
+
+variable "create_kms_key" {
+  description = "Create a dedicated KMS key (and alias/<application>/<env>) for the application, exposed as the ecs_kms_key_id output. The module encrypts nothing with it: set false when nothing uses that output."
+  type        = bool
+  default     = true
+}

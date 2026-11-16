@@ -1,5 +1,6 @@
-# KMS key
+# KMS key (optional: the module itself encrypts nothing with it)
 resource "aws_kms_key" "app_kms_key" {
+  count                   = var.create_kms_key ? 1 : 0
   description             = "kms_key-${var.stack}-${var.env}"
   enable_key_rotation     = true
   key_usage               = "ENCRYPT_DECRYPT"
@@ -45,7 +46,8 @@ EOF
 
 # KMS alias
 resource "aws_kms_alias" "app_kms_key" {
+  count         = var.create_kms_key ? 1 : 0
   name          = "alias/${var.application}/${var.env}"
-  target_key_id = aws_kms_key.app_kms_key.key_id
+  target_key_id = aws_kms_key.app_kms_key[0].key_id
 }
 

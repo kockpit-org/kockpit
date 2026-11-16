@@ -141,6 +141,7 @@ Commonly overridden (all have defaults):
 | `enable_service_discovery` | `true` | Register the service with Cloud Map. Set `false` if nothing discovers it via internal DNS. |
 | `aws_service_discovery_private_dns_namespace` | `null` | Cloud Map private DNS namespace; required when `enable_service_discovery = true`. |
 | `kms_secret_arn` | `""` | KMS key ARN used to decrypt `secrets` values; required when `secrets` is non-empty. |
+| `create_kms_key` | `true` | Create a dedicated KMS key + alias for the app (`ecs_kms_key_id` output). The module encrypts nothing with it; set `false` when nothing uses the output. |
 | `env` | `""` | Environment name (e.g. `dev`, `pro`); used in most resource names. |
 | `region` | `"eu-west-1"` | AWS region. |
 | `tags` | `{}` | Tags applied to all taggable resources. |
@@ -172,7 +173,7 @@ security-group variables not listed above.
 | `aws_iam_role_execution_name` | Name of the ECS task execution IAM role. |
 | `aws_iam_role_execution_arn` | ARN of the ECS task execution IAM role. |
 | `ecs_security_group` | ID of the task's security group. |
-| `ecs_kms_key_id` | ID of the KMS key created for this application. |
+| `ecs_kms_key_id` | ID of the KMS key created for this application (`null` when `create_kms_key = false`). |
 | `ecs_service_name` | Name of the ECS service. |
 | `ecs_service_arn` | ARN/ID of the ECS service. |
 | `ecs_task_definition_arn` | ARN of the active (Fargate or EC2) task definition. |
