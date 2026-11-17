@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.kockpit</groupId>
-        <artifactId>kockpit-features-audit-notification</artifactId><version>1.2.0-SNAPSHOT</version>
+        <artifactId>kockpit-features-audit-notification</artifactId><version>1.2.0</version>
     </parent>
     <artifactId>kockpit-audit-notification-eventhub</artifactId>
     <name>Kockpit Audit Notification Event Hub</name>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.kockpit</groupId>
             <artifactId>kockpit-audit-api-impl</artifactId>
-            <version>1.2.0-SNAPSHOT</version>
+            <version>1.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
