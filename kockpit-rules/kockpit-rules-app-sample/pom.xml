@@ -35,6 +35,15 @@
 
     <build>
         <plugins>
+            <!-- Sample application: not published to Maven Central.
+                 central-publishing-maven-plugin ignores maven.deploy.skip. -->
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <configuration>
+                    <skipPublishing>true</skipPublishing>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.kockpit</groupId>
                 <artifactId>kockpit-rules-maven-plugin</artifactId>

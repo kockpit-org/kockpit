@@ -13,6 +13,19 @@
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
 	</properties>
+	<build>
+		<plugins>
+			<!-- Server-side modules of the Kockpit backend application: not published to Maven Central.
+			     central-publishing-maven-plugin ignores maven.deploy.skip. -->
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<configuration>
+					<skipPublishing>true</skipPublishing>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<modules>
         <module>kockpit-backend-authentication-basic</module>
         <module>kockpit-backend-authentication-local</module>
