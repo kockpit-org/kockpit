@@ -67,9 +67,9 @@ jobs:
         if: github.event.inputs.deploy_modules == 'all' || github.event.inputs.deploy_modules == ''
         run: mvn deploy -Pcentral -Dmaven.test.skip=true
         env:
-          MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          MAVEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
 
       - name: Deploy kockpit-core to Maven Central
         if: github.event.inputs.deploy_modules == 'core'
