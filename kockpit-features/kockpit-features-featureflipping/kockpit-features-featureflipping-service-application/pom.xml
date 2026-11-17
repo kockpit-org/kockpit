@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.kockpit</groupId>
-        <artifactId>kockpit-features-featureflipping</artifactId><version>1.2.0</version>
+        <artifactId>kockpit-features-featureflipping</artifactId><version>1.2.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>kockpit-features-featureflipping-service-application</artifactId>
@@ -18,17 +18,17 @@
         <dependency>
             <groupId>org.kockpit</groupId>
             <artifactId>kockpit-features-featureflipping-service</artifactId>
-            <version>1.2.0</version>
+            <version>1.2.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.kockpit</groupId>
             <artifactId>kockpit-core-communication</artifactId>
-            <version>1.2.0</version>
+            <version>1.2.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.kockpit</groupId>
             <artifactId>kockpit-audit-sdk</artifactId>
-            <version>1.2.0</version>
+            <version>1.2.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
