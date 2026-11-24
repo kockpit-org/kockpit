@@ -152,7 +152,10 @@ resource "aws_security_group_rule" "lb_http_from_cloudfront" {
 # the listener only forwards requests carrying the shared X-Origin-Verify
 # header and answers 403 to everything else.
 locals {
-  origin_verify_enabled = var.origin_verify_header_value != null
+  # nonsensitive: the variable is sensitive, so anything derived from it is
+  # too, and count / for_each refuse sensitive values. Only "is it set" is
+  # revealed here, never the secret itself.
+  origin_verify_enabled = nonsensitive(var.origin_verify_header_value != null)
 }
 
 resource "aws_lb_listener" "http" {

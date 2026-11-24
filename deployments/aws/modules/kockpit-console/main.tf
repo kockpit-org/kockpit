@@ -109,6 +109,11 @@ resource "aws_cloudfront_origin_access_control" "console_oac" {
 
 # Locals for conditional configuration
 locals {
+  # nonsensitive: the variable is sensitive, so anything derived from it is
+  # too, and for_each refuses sensitive values. Only "is it set" is
+  # revealed here, never the secret itself.
+  origin_verify_enabled = nonsensitive(var.origin_verify_header_value != null)
+
   distribution_origins = concat(
     [
       {
@@ -190,7 +195,7 @@ resource "aws_cloudfront_distribution" "console_distribution" {
       # distribution can reach the backend (the CloudFront prefix list on
       # the ALB security group admits every CloudFront distribution).
       dynamic "custom_header" {
-        for_each = var.origin_verify_header_value == null ? [] : [1]
+        for_each = local.origin_verify_enabled ? [1] : []
         content {
           name  = "X-Origin-Verify"
           value = var.origin_verify_header_value
