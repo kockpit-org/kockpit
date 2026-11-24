@@ -185,6 +185,17 @@ resource "aws_cloudfront_distribution" "console_distribution" {
         origin_protocol_policy = "http-only"
         origin_ssl_protocols   = ["TLSv1.2"]
       }
+
+      # Shared secret the backend ALB listener checks, so only this
+      # distribution can reach the backend (the CloudFront prefix list on
+      # the ALB security group admits every CloudFront distribution).
+      dynamic "custom_header" {
+        for_each = var.origin_verify_header_value == null ? [] : [1]
+        content {
+          name  = "X-Origin-Verify"
+          value = var.origin_verify_header_value
+        }
+      }
     }
   }
 

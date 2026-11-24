@@ -163,3 +163,10 @@ variable "cognito_auto_callback_update" {
   type        = bool
   default     = true
 }
+
+variable "origin_verify_header_value" {
+  description = "Secret sent as the X-Origin-Verify header to the ALB backend origin. Must match the kockpit-console-backend module value. Null = no header."
+  type        = string
+  default     = null
+  sensitive   = true
+}

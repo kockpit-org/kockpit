@@ -145,15 +145,51 @@ resource "aws_security_group_rule" "lb_http_from_cloudfront" {
   description       = "Allow CloudFront to reach ALB on port 80"
 }
 
-# Dedicated HTTP listener for this backend service. Unauthenticated at the
-# ALB by design: access control is enforced upstream, at the CloudFront
-# distribution + Lambda@Edge in the kockpit-console module, not here.
+# Dedicated HTTP listener for this backend service. Access control is
+# enforced upstream, at the CloudFront distribution + Lambda@Edge in the
+# kockpit-console module. The security group admits every CloudFront
+# distribution (managed prefix list), so with origin_verify_header_value set
+# the listener only forwards requests carrying the shared X-Origin-Verify
+# header and answers 403 to everything else.
+locals {
+  origin_verify_enabled = var.origin_verify_header_value != null
+}
+
 resource "aws_lb_listener" "http" {
   load_balancer_arn = var.load_balancer_arn
   port              = 80
   protocol          = "HTTP"
 
   default_action {
+    type             = local.origin_verify_enabled ? "fixed-response" : "forward"
+    target_group_arn = local.origin_verify_enabled ? null : module.ecs_app.aws_lb_target_group.arn
+
+    dynamic "fixed_response" {
+      for_each = local.origin_verify_enabled ? [1] : []
+      content {
+        content_type = "text/plain"
+        message_body = "Forbidden"
+        status_code  = "403"
+      }
+    }
+  }
+
+  tags = var.tags
+}
+
+resource "aws_lb_listener_rule" "http_origin_verify" {
+  count        = local.origin_verify_enabled ? 1 : 0
+  listener_arn = aws_lb_listener.http.arn
+  priority     = 1
+
+  condition {
+    http_header {
+      http_header_name = "X-Origin-Verify"
+      values           = [var.origin_verify_header_value]
+    }
+  }
+
+  action {
     type             = "forward"
     target_group_arn = module.ecs_app.aws_lb_target_group.arn
   }

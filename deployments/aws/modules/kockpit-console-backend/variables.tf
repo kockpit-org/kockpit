@@ -188,3 +188,10 @@ locals {
     { for e in var.additional_environment_variables : e.name => e.value }
   )
 }
+
+variable "origin_verify_header_value" {
+  description = "Secret the port 80 listener requires in the X-Origin-Verify header (sent by the kockpit-console CloudFront origin). Null = forward everything, no check. Letters and digits only: ALB header conditions treat * and ? as wildcards."
+  type        = string
+  default     = null
+  sensitive   = true
+}
