@@ -164,8 +164,14 @@ variable "cognito_auto_callback_update" {
   default     = true
 }
 
+variable "enable_origin_verify" {
+  description = "Turn on the X-Origin-Verify check between CloudFront and the backend ALB. Requires origin_verify_header_value."
+  type        = bool
+  default     = false
+}
+
 variable "origin_verify_header_value" {
-  description = "Secret sent as the X-Origin-Verify header to the ALB backend origin. Must match the kockpit-console-backend module value. Null = no header."
+  description = "Secret sent as the X-Origin-Verify header to the ALB backend origin. Must match the kockpit-console-backend module value. Used when enable_origin_verify = true."
   type        = string
   default     = null
   sensitive   = true

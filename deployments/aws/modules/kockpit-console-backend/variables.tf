@@ -189,8 +189,14 @@ locals {
   )
 }
 
+variable "enable_origin_verify" {
+  description = "Turn on the X-Origin-Verify check between CloudFront and the backend ALB. Requires origin_verify_header_value."
+  type        = bool
+  default     = false
+}
+
 variable "origin_verify_header_value" {
-  description = "Secret the port 80 listener requires in the X-Origin-Verify header (sent by the kockpit-console CloudFront origin). Null = forward everything, no check. Letters and digits only: ALB header conditions treat * and ? as wildcards."
+  description = "Secret the port 80 listener requires in the X-Origin-Verify header (sent by the kockpit-console CloudFront origin). Used when enable_origin_verify = true. Letters and digits only: ALB header conditions treat * and ? as wildcards."
   type        = string
   default     = null
   sensitive   = true

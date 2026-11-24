@@ -109,10 +109,10 @@ resource "aws_cloudfront_origin_access_control" "console_oac" {
 
 # Locals for conditional configuration
 locals {
-  # nonsensitive: the variable is sensitive, so anything derived from it is
-  # too, and for_each refuses sensitive values. Only "is it set" is
-  # revealed here, never the secret itself.
-  origin_verify_enabled = nonsensitive(var.origin_verify_header_value != null)
+  # A separate bool, not "header value != null": the value usually comes
+  # from random_password, unknown until apply, and count / for_each need a
+  # value known at plan time (and refuse sensitive ones).
+  origin_verify_enabled = var.enable_origin_verify
 
   distribution_origins = concat(
     [
